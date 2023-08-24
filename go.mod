@@ -1,3 +1,3 @@
-module github.com/fzzf678/mysql_tlcp
+module github.com/fzzf678/mysql
 
 go 1.18
