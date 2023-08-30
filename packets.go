@@ -309,8 +309,6 @@ func (mc *mysqlConn) writeHandshakeResponsePacket(authResp []byte, plugin string
 	// To enable TLS / SSL or TLCP
 	if mc.cfg.TLS != nil {
 		clientFlags |= clientSSL
-	} else if mc.cfg.TLCP != nil {
-		clientFlags |= clientTLCP
 	}
 	if mc.cfg.TLCP != nil {
 		clientFlags |= clientTLCP
