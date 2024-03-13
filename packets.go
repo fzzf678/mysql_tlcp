@@ -295,10 +295,12 @@ func (mc *mysqlConn) writeHandshakeResponsePacket(authResp []byte, plugin string
 	}
 
 	// To enable TLS / SSL or TLCP
+	var tlcpFlag clientExtensionFlag = 0
 	if mc.cfg.TLS != nil {
 		clientFlags |= clientSSL
 	} else if mc.cfg.TLCP != nil {
-		clientFlags |= clientTLCP
+		clientFlags |= clientCapabilityExtension
+		tlcpFlag |= clientTLCP
 	}
 
 	if mc.cfg.MultiStatements {
@@ -369,6 +371,9 @@ func (mc *mysqlConn) writeHandshakeResponsePacket(authResp []byte, plugin string
 	for ; pos < 13+23; pos++ {
 		data[pos] = 0
 	}
+
+	// TLCP flag in data[13]
+	data[13] = byte(tlcpFlag)
 
 	// SSL Connection Request Packet
 	// http://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::SSLRequest

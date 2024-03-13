@@ -68,7 +68,17 @@ const (
 	clientCanHandleExpiredPasswords
 	clientSessionTrack
 	clientDeprecateEOF
-	clientTLCP
+	clientOptionalResultSetMetadata
+	clientZSTDCompressionAlgorithm
+	clientQueryAttributes
+	multiFactorAuthentication
+	clientCapabilityExtension // use CLIENT_CAPABILITY_EXTENSION support TLCP
+)
+
+type clientExtensionFlag uint8
+
+const (
+	clientTLCP clientExtensionFlag = 1 << iota
 )
 
 const (
