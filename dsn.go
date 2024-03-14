@@ -613,7 +613,7 @@ func parseDSNParams(cfg *Config, params string) (err error) {
 
 		// TLCP-CA-Path
 		case "tlcpCaPath":
-			cfg.TLCPCaPath = append(cfg.TLCPCaPath, strings.ToLower("/tmp/"+value))
+			cfg.TLCPCaPath = append(cfg.TLCPCaPath, os.TempDir()+value)
 
 		// I/O write Timeout
 		case "writeTimeout":
