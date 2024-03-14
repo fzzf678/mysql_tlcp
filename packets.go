@@ -236,7 +236,7 @@ func (mc *mysqlConn) readHandshakePacket() (data []byte, plugin string, err erro
 	higher2Bytes := clientFlag(binary.LittleEndian.Uint16(data[pos+3 : pos+5]))
 	if higher2Bytes&(clientCapabilityExtension>>16) != 0 {
 		mc.flags |= clientCapabilityExtension
-		mc.extensionFlag |= clientExtensionFlag(data[pos+9])
+		mc.extensionFlag |= clientExtensionFlag(data[39])
 	}
 	if mc.extensionFlag&clientTLCP == 0 && mc.cfg.TLCP != nil {
 		if mc.cfg.AllowFallbackToPlaintext {
