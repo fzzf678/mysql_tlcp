@@ -31,6 +31,7 @@ type mysqlConn struct {
 	maxWriteSize     int
 	writeTimeout     time.Duration
 	flags            clientFlag
+	extensionFlag    clientExtensionFlag
 	status           statusFlag
 	sequence         uint8
 	parseTime        bool
