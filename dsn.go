@@ -18,6 +18,7 @@ import (
 	"net"
 	"net/url"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -613,7 +614,7 @@ func parseDSNParams(cfg *Config, params string) (err error) {
 
 		// TLCP-CA-Path
 		case "tlcpCaPath":
-			cfg.TLCPCaPath = append(cfg.TLCPCaPath, os.TempDir()+value)
+			cfg.TLCPCaPath = append(cfg.TLCPCaPath, filepath.Join(os.UserHomeDir(), value))
 
 		// I/O write Timeout
 		case "writeTimeout":
