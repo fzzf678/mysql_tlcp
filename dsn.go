@@ -614,7 +614,11 @@ func parseDSNParams(cfg *Config, params string) (err error) {
 
 		// TLCP-CA-Path
 		case "tlcpCaPath":
-			cfg.TLCPCaPath = append(cfg.TLCPCaPath, filepath.Join(os.UserHomeDir(), value))
+			homeDir, err := os.UserHomeDir()
+			if err != nil {
+				return err
+			}
+			cfg.TLCPCaPath = append(cfg.TLCPCaPath, filepath.Join(homeDir, value))
 
 		// I/O write Timeout
 		case "writeTimeout":
