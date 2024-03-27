@@ -18,6 +18,7 @@ import (
 	"net"
 	"net/url"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -149,17 +150,16 @@ func (cfg *Config) normalize() error {
 	}
 
 	if cfg.TLCP == nil {
+		pool := loadTLCPCert(cfg.TLCPCaPath)
 		switch cfg.TLCPConfig {
 		case "false", "":
 			// don't set anything
 		case "true":
-			// todo: CA cert
-			pool := loadTLCPCert(cfg.TLCPCaPath)
 			cfg.TLCP = &tlcp.Config{InsecureSkipVerify: false, RootCAs: pool}
 		case "skip-verify":
-			cfg.TLCP = &tlcp.Config{InsecureSkipVerify: true}
+			cfg.TLCP = &tlcp.Config{InsecureSkipVerify: true, RootCAs: pool}
 		case "preferred":
-			cfg.TLCP = &tlcp.Config{InsecureSkipVerify: true}
+			cfg.TLCP = &tlcp.Config{InsecureSkipVerify: true, RootCAs: pool}
 			cfg.AllowFallbackToPlaintext = true
 		default:
 			return errors.New("invalid value / unknown tlcp config " + cfg.TLSConfig)
@@ -614,7 +614,11 @@ func parseDSNParams(cfg *Config, params string) (err error) {
 
 		// TLCP-CA-Path
 		case "tlcpCaPath":
-			cfg.TLCPCaPath = append(cfg.TLCPCaPath, strings.ToLower(value))
+			homeDir, err := os.UserHomeDir()
+			if err != nil {
+				return err
+			}
+			cfg.TLCPCaPath = append(cfg.TLCPCaPath, filepath.Join(homeDir, value))
 
 		// I/O write Timeout
 		case "writeTimeout":
